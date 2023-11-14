@@ -1,0 +1,8 @@
+<!-- FILEPATH: /C:/Users/Ali/Documents/KS/django/Insta_clone/registration/templates/registration/profile.html -->
+
+{% comment %} {% extends 'base.html' %} {% endcomment %}
+
+{% block content %}
+    <h1>Profile Page for User: {{ user.username }}</h1>
+    <a href="{% url "logout" %}"><p>logout button</p></a>
+{% endblock %}

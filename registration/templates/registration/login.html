@@ -1,0 +1,10 @@
+<h1> Login </h1>
+<form action="{% url 'registration:login' %}" method="post">
+    {% csrf_token %}
+    {% if login_message %}<p style="color: red"><strong>{{ login_message }}</strong></p>{% endif %}
+    <label for="username">Username: </label>
+    <input type="text" value="" name="username"> <br/><br/>
+    <label for="email">Password: </label>
+    <input type="password" value="" name="password"> <br/><br/>
+    <input type="submit" value="Login" id="login">
+</form> 
