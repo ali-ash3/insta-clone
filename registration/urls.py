@@ -1,11 +1,8 @@
 from django.urls import path, include
 from . import views
 
+
 app_name = 'registration'
-
-from django.urls import path
-
-
 urlpatterns = [
     path("", views.index, name="user_profile"),
     path("signup/", views.signup_view, name="signup"),

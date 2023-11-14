@@ -17,7 +17,7 @@ def index(request):
 def signup_view(request):
     if request.method == "GET":
         if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse('registration:user_profile'))
+            return HttpResponseRedirect(reverse('feed:index_feed'))
         return render(request, "registration/signup.html")
     elif request.method == "POST":
         new_user = User.objects.create_user(
@@ -26,13 +26,13 @@ def signup_view(request):
             password=request.POST.get('password'),
         )
         new_user.save()
-        return HttpResponseRedirect(reverse('registration:login'))
+        return HttpResponseRedirect(reverse('feed:index_feed'))
 
 
 def login_view(request):
     if request.method == "GET":
         if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse('registration:user_profile'))
+            return HttpResponseRedirect(reverse('feed:index_feed'))
         return render(request, "registration/login.html")
     elif request.method == "POST":
         username = request.POST.get('username') # POST["username"]
@@ -40,7 +40,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse('registration:user_profile'))
+            return HttpResponseRedirect(reverse('feed:index_feed'))
         else:
             return render(request, "registration/login.html", {"login_message": "Username/password is incorrect"})
         
