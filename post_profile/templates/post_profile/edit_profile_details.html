@@ -1,0 +1,13 @@
+{% block content %}
+    <h2>Edit Profile</h2>
+    <form method="post" action="{% url 'post_profile:edit_profile_details' user.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="id_bio">Bio:</label>
+        <textarea name="bio" id="id_bio">{{ profile_details.bio }}</textarea><br>
+
+        <label for="id_profile_picture">Profile Picture:</label>
+        <input type="file" name="profile_picture" id="id_profile_picture"><br>
+
+        <button type="submit">Save Changes</button>
+    </form>
+{% endblock %}

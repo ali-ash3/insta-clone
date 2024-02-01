@@ -1,0 +1,16 @@
+{% block content %}
+<h2>Profile Details</h2>
+<form
+  method="post"
+  action="{% url 'post_profile:profile_details' user.id %}"
+  enctype="multipart/form-data"
+>
+  {% csrf_token %}
+  <label for="bio">Bio:</label>
+  <textarea name="bio" rows="1" cols="20"></textarea><br /><br />
+  <label for="profile_picture">Profile Picture:</label>
+  <input type="file" name="profile_picture" /><br /><br />
+
+  <button type="submit">Save</button>
+</form>
+{% endblock %}

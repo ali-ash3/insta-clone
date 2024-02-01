@@ -1,0 +1,80 @@
+{% block content %}
+    <div class="profile">
+        <h1>Username: {{ user.username }}</h1>
+
+        {% if profile_details.profile_picture %}
+            <img src="{{ profile_details.profile_picture.url }}" alt="Profile Picture" width="10%" style="border-radius: 50%;">
+        {% else %}
+            <p>No profile picture available</p>
+        {% endif %}
+
+        {% if profile_details.bio %}
+            <p>Bio: {{ profile_details.bio }}</p>
+        {% elif request.user == user %}
+            <p>No bio yet <a href="{% url "post_profile:edit_profile_details" user.id %}">Add Bio</a></p>
+        {% else %}
+            <p>No bio yet</p>
+        {% endif %}
+
+        {% if user != user_profile.user %}
+            <div id="follow-button">
+                <button id="toggle-follow" data-user-id="{{ user.id }}">
+                    {% if user_profile.user in user.followers.all %}
+                        Unfollow
+                    {% else %}
+                        Follow
+                    {% endif %}
+                </button>
+            </div>
+            <p id="follower-count">Followers: {{ follower_count }}</p>
+        {% endif %}
+
+        <h2>Posts:</h2>
+        {% if user.photo_set.all %}
+            <ul>
+                {% for photo in user.photo_set.all %}
+                    <li>
+                        <img src="{{ photo.image.url }}" alt="User Post" width="100" height="100">
+                        <p>Caption: {{ photo.caption }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No posts yet.</p>
+        {% endif %}
+    </div>
+    <p>Go To <a href="{% url "accounts:index" %}">Index</a></p>
+
+    {% if request.user == user %}
+        <p><a href="{% url "post_profile:edit_profile_details" user.id %}">Edit details</a></p>
+        <p><a href="{% url "post_profile:upload_photo" %}">Create Post</a></p>
+    {% endif %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#toggle-follow').click(function () {
+                var userId = $(this).data('user-id');
+                $.ajax({
+                    url: '{% url "post_profile:toggle_follow" 0 %}'.replace('0', userId),
+                    method: 'POST',
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        if (data.error) {
+                            alert(data.error);
+                        } else {
+                            if (data.is_following) {
+                                $('#toggle-follow').text('Unfollow');
+                            } else {
+                                $('#toggle-follow').text('Follow');
+                            }
+                            $('#follower-count').text('Followers: ' + data.follower_count);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
