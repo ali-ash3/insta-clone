@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Navbar Example</title>
+    <style>
+        /* Basic styling for demonstration */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f8f8f8;
+            padding: 10px;
+        }
+        .navbar-logo img {
+            height: 50px; /* Adjust the logo size as needed */
+        }
+        .navbar-links a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="navbar-logo">
+        <!-- Replace the src attribute with the path to your Instagram logo image -->
+        <a href="{% url "accounts:index" %}"><img src="https://png.monster/wp-content/uploads/2021/01/instagram-clip-art-14-70017bcc-370x132.png" alt="Instagram Logo"></a>
+    </div>
+    <div class="navbar-links">
+        <!-- Leave the href attributes empty to add URLs later -->
+        <a href="{% url "accounts:index" %}">Home</a>
+        <a href="{% url "post_profile:upload_photo" %}">Create Post</a>
+        <a href="#">Search</a>
+        <a href="{% url "accounts:logout" %}">Logout</a>
+    </div>
+</div>
+
+</body>
+</html>

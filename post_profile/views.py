@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
-from post_profile.models import Comment, Like, Photo, ProfileDetails
+from post_profile.models import Comment, Follow, Like, Photo, ProfileDetails
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
@@ -32,20 +32,6 @@ def edit_profile_details(request, id):
         return render(request, 'post_profile/edit_profile_details.html', context)
 
 
-
-def profile(request, id):
-    user = User.objects.get(id=id)
-    profile_details ,created = ProfileDetails.objects.get_or_create(user=user)
-
-    # profile_details = ProfileDetails.objects.get(id=)
-    context = {
-        'user': user,
-        'profile_details': profile_details,
-    }
-    return render(request, 'post_profile/profile.html', context)
-
-
-
 @login_required
 def upload_photo(request):
     if request.method == 'POST' and request.FILES.get('image'):
@@ -64,8 +50,8 @@ def upload_photo(request):
 
 
 @login_required
-def like_photo(request, photo_id):
-    photo = get_object_or_404(Photo, pk=photo_id)
+def like_photo(request, id):
+    photo = get_object_or_404(Photo, pk=id)
     user = request.user
     like, created = Like.objects.get_or_create(photo=photo, user=user)
 
@@ -88,55 +74,55 @@ def like_photo(request, photo_id):
 
 
 # @login_required
-def comment_photo(request, photo_id):
-    photo = get_object_or_404(Photo, pk=photo_id)
+def comment_photo(request, id):
+    photo = get_object_or_404(Photo, pk=id)
     if request.method == 'POST':
         text = request.POST.get('comment_text')
         Comment.objects.create(user=request.user, photo=photo, text=text)
-    return redirect('post_profile:photo_detail', photo_id=photo_id)
+    return redirect('post_profile:photo_detail', id=id)
 
 
-def photo_detail(request, photo_id):
-    photo = get_object_or_404(Photo, id=photo_id)
+def photo_detail(request, id):
+    photo = get_object_or_404(Photo, id=id)
+    print("photo_id", photo.id)
     liked = True if Like.objects.filter(photo=photo, user=request.user).count() > 0 else False
     count = Like.objects.filter(photo=photo).count()
     return render(request, 'post_profile/photo_detail.html', {'photo': photo, 'liked': liked, 'count': count})
 
-@login_required
-def view_follow(request, user_id):
-    user_to_follow = User.objects.get(id=user_id)
 
-    if user_to_follow != request.user:
-        user_profile, created = ProfileDetails.objects.get_or_create(user=request.user)
-        
-        if user_to_follow in user_profile.following.all():  # Check the user's following list
-            user_profile.following.remove(user_to_follow)  # Remove the user from following list
-            is_following = False
-        else:
-            user_profile.following.add(user_to_follow)  # Add the user to following list
-            is_following = True
-        
-        follower_count = user_to_follow.profiledetails.followers.count()  # Get follower count of the followed user
-
-        return JsonResponse({'is_following': is_following, 'follower_count': follower_count})
-    else:
-        return JsonResponse({'error': 'You cannot follow/unfollow yourself'})
+def follow(request, id):
+    user_follow = User.objects.filter(id = id).first()
+    follow = Follow.objects.filter(followed_to=user_follow, followed_by=request.user).first()
+    if not follow:
+        follow_model = Follow.objects.create(followed_to= user_follow, followed_by=request.user)
+        follow_model.save()
+        return redirect("post_profile:profile", id=id)
+    # else:
+    #     messages.warning(request, f"already followed")
 
 
-# def add_profile_details(request, id):
+def unfollow(request, id):
+    user_to_unfollow = get_object_or_404(User, id=id)
+    follow = Follow.objects.filter(followed_to=user_to_unfollow, followed_by=request.user).first()
     
-#     if not request.user.is_authenticated:
-#         return redirect('accounts:login')
+    if follow:
+        follow.delete()
+    return redirect("post_profile:profile", id=id)
 
-#     if request.method == 'POST':
-#         bio = request.POST.get('bio')
-#         profile_picture = request.FILES.get('profile_picture')
 
-#         profile_details_instance, created = ProfileDetails.objects.get_or_create(user=request.user)
-#         profile_details_instance.bio = bio
-#         profile_details_instance.profile_picture = profile_picture
-#         profile_details_instance.save()
-
-#         return redirect('accounts:profile')
-
-#     return render(request, 'post_profile/profile_details.html')
+def profile(request, id):
+    user = request.user
+    user_data = User.objects.filter(id = id).first()
+    if user_data is not None:
+        if request.user.is_authenticated:
+            follow = Follow.objects.filter(followed_by=user, followed_to=user_data).first()
+            follower = Follow.objects.filter(followed_to=user_data).count()
+            following = Follow.objects.filter(followed_by = user_data).count()
+            profile = ProfileDetails.objects.filter(user = user).first()
+            profile_data = ProfileDetails.objects.filter(user = user_data).first()
+            posts = Photo.objects.filter(user = user_data)
+            post_number = posts.count()
+            return render(request, "post_profile/profile.html", {"user": user, "profile": profile, "posts": posts, "user_data": user_data, "profile_data": profile_data, "follow": follow, "following": following, "follower": follower, "post_number": post_number})
+        return redirect('accounts:login')
+    else:
+        return render(request, "post_profile/user_not_found.html")

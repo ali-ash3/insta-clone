@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ProfileDetails, Photo
+from .models import Follow, ProfileDetails, Photo
 
 # Register your models here.
 
@@ -12,3 +12,4 @@ class PhotoAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'image', 'caption', 'created_at')
 
 admin.site.register(Photo, PhotoAdmin)
+admin.site.register(Follow)

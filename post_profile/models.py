@@ -7,8 +7,9 @@ class ProfileDetails(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,related_name="userProfile")
     bio = models.CharField(max_length=50, default='No bio')
     profile_picture = models.ImageField(upload_to='profile_pics/', default='profile_pics/Default_pfp.png', blank=True)
+    # followers = models.ManyToManyField(User, related_name='following', blank=True)
 
-
+    
 class Photo(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='uploaded_posts/')
@@ -30,5 +31,8 @@ class Comment(models.Model):
 
 
 class Follow(models.Model):
-    follower = models.ForeignKey(User, related_name='following', on_delete=models.CASCADE)
-    followed_user = models.ForeignKey(User, related_name='followers', on_delete=models.CASCADE)
+    followed_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followed_user")
+    followed_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following")
+    
+    def __str__(self):
+        return f"{self.followed_by.username} followed {self.followed_to.username}"
