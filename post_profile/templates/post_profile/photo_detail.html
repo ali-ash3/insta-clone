@@ -39,16 +39,16 @@
 
     .left-column {
         width: 60%;
-        max-height: 80vh; /* Adjust to what works best for your layout */
-        border-right: 1px solid #dbdbdb;
-        overflow-y: auto; /* Allows scrolling for tall images */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f4f4f4; /* Placeholder color if the image doesn't cover the whole area */
     }
     
     .left-column img {
-        width: 100%; /* Will take up 100% of the .left-column width */
-        height: auto; /* Height is set automatically to maintain the aspect ratio */
-        max-height: 80vh; /* Prevents the image from being too tall */
-        object-fit: contain; /* Ensures the image fits within the dimensions without distortion */
+        max-width: 100%; /* Ensures the image does not exceed the column width */
+        max-height: 80vh; /* Ensures the image does not exceed the column height */
+        object-fit: cover; /* Covers the area of the div without stretching */
     }
     
     
@@ -112,7 +112,6 @@
 </style>
 
 <body>
-  <!-- ... -->
 
 <div class="container">
     <div class="left-column">
