@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Navbar Example</title>
+    <title>Navbar</title>
     <style>
         /* Basic styling for demonstration */
         .navbar {
@@ -11,12 +11,19 @@
             align-items: center;
             background-color: #f8f8f8;
             padding: 10px;
+            z-index: 1000;
+            border-style: solid;
+            border-color: black;
+            border-width: 1px;
+            width: 98.5%; /* This ensures the navbar stretches across the full width */
+
+
         }
         .navbar-logo img {
             height: 50px; /* Adjust the logo size as needed */
         }
         .navbar-links a {
-            margin-left: 20px;
+            margin-left: 50px;
             text-decoration: none;
             color: #333;
         }
@@ -32,6 +39,7 @@
     <div class="navbar-links">
         <!-- Leave the href attributes empty to add URLs later -->
         <a href="{% url "accounts:index" %}">Home</a>
+        <a href="{% url "post_profile:profile" user.id %}">Profile</a>
         <a href="{% url "post_profile:upload_photo" %}">Create Post</a>
         <a href="#">Search</a>
         <a href="{% url "accounts:logout" %}">Logout</a>

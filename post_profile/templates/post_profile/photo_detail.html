@@ -1,3 +1,4 @@
+{% include "post_profile/navbar.html" %}
 {% load static %}
 <html lang="en">
 <head>
@@ -6,47 +7,167 @@
     <title>Photo Detail</title>
     {% comment %} <link rel="stylesheet" href="{% static '/style.css' %}"> {% endcomment %}
 </head>
-<body>
-    <!-- photo_detail.html -->
-    <h2>{{ photo.caption }}</h2>
-    <img src="{{ photo.image.url }}" alt="Photo" width=30%%>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #fafafa;
+        padding-top: 50px;
+    }
 
-    <!-- Like button -->
-    <p><button onclick="toggleLike({{ photo.id }})" id="likeBtn">
-        {% if  liked %}
-            unlike
-        {% else %}
-            Like
-        {% endif %}
-    </button></p>
-    <div>
-        <p><div style="margin-left: 5px; font-weight: bold; margin-top: 5px" id="like_count">{{ count }} likes</div></p>
-    </div>
-    {% comment %} <form id="likeForm" method="post" action="{% url 'post_profile:like_photo' photo.id %}">
-        {% csrf_token %}
-        <button id="likeButton" type="submit">
-            {% if request.user.profile in photo.likes.all %}
-                Unlike
-            {% else %}
-                Like
-            {% endif %}
-        </button>
-        <p>Likes: <span id="likesCount">{{ photo.likes.count }}</span></p>
-    </form> {% endcomment %}
+    .navbar {
+        position: fixed; /* This will make the navbar stay at the top */
+        top: 0;
+        left: 0;
+        width: 98.5%; /* This ensures the navbar stretches across the full width */
+        z-index: 1000; /* This ensures the navbar stays on top of other content */
+    }
 
-    <!-- Comment form -->
-    <form method="post" action="{% url 'post_profile:comment_photo' photo.id %}">
-        {% csrf_token %}
-        <input type="text" name="comment_text" placeholder="Add a comment">
-        <button type="submit">Post</button>
-    </form>
+    .container {
+        display: flex;
+        border: 1px solid #dbdbdb;
+        border-radius: 3px;
+        width: 60%;
+        margin: auto;
+        background-color: #fff;
+    }
+
+    .left-column {
+        width: 60%;
+        max-height: 80vh; /* Adjust to what works best for your layout */
+        border-right: 1px solid #dbdbdb;
+        overflow-y: auto; /* Allows scrolling for tall images */
+    }
     
-    <!-- Comments -->
-    {% for comment in photo.comment_set.all %}
-        <p>{{ comment.user.username }}: {{ comment.text }}</p>
-    {% endfor %}
+    .left-column img {
+        width: 100%; /* Will take up 100% of the .left-column width */
+        height: auto; /* Height is set automatically to maintain the aspect ratio */
+        max-height: 80vh; /* Prevents the image from being too tall */
+        object-fit: contain; /* Ensures the image fits within the dimensions without distortion */
+    }
+    
+    
 
-    <p><a href="{% url 'accounts:index' %}">Home</a></p>
+    .right-column {
+        width: 40%;
+        padding: 20px;
+    }
+
+    .right-column h2, .right-column p {
+        margin: 10px 0;
+    }
+
+    .profile-name {
+        font-weight: bold;
+    }
+
+    .comments-list {
+        height: 200px;
+        overflow-y: auto;
+        margin-bottom: 20px;
+    }
+
+    .like-comment-section {
+        border-top: 1px solid #dbdbdb;
+        padding-top: 10px;
+    }
+
+    .like-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px 10px;
+    }
+
+    .like-button:focus {
+        outline: none;
+    }
+
+    .comment-form {
+        display: flex;
+        align-items: center;
+    }
+
+    .comment-form input {
+        flex-grow: 1;
+        border: 1px solid #dbdbdb;
+        border-radius: 3px;
+        padding: 5px 10px;
+        margin-right: 10px;
+    }
+
+    .comment-form button {
+        background-color: #0095f6;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+</style>
+
+<body>
+  <!-- ... -->
+
+<div class="container">
+    <div class="left-column">
+        <!-- Image -->
+        <img src="{{ photo.image.url }}" alt="Photo" style="width:100%; height:auto;" width="600" 
+        >
+    </div>
+
+    <div class="right-column">
+        <!-- Profile name -->
+        <h2 class="profile-name"><a href="{% url "post_profile:profile" photo.user.id %}">{{ photo.user.username }}</a><span style="font-size: 70%">    {{ photo.caption }}</span></h2>
+        {% comment %} <h4 class="profile-name">{{ photo.caption }}</h4> {% endcomment %}
+
+
+        <!-- Edit Post Button (visible only to the user who posted the image) -->
+        {% if user.is_authenticated and user == photo.user %}
+        <a href="{% url 'post_profile:edit_photo' photo.id %}">
+            <button>Edit Post</button>
+        </a>
+        {% endif %}
+
+        
+        <!-- Comments -->
+        <p><strong>Comments:</strong></p>
+        <div class="comments-list">
+            {% for comment in photo.comment_set.all %}
+                <p><strong>{{ comment.user.username }}</strong>: {{ comment.text }}</p>
+            {% endfor %}
+        </div>
+
+
+        <!-- Like button and counter -->
+        <div class="like-comment-section">
+            <button onclick="toggleLike({{ photo.id }})" id="likeBtn" class="like-button">
+                {% if liked %}
+                    unlike
+                {% else %}
+                    Like
+                {% endif %}
+            </button>
+            <p id="like_count">{{ count }} likes</p>
+        </div>
+
+        <!-- Comment form -->
+        <div class="comment-form">
+            <form method="post" action="{% url 'post_profile:comment_photo' photo.id %}">
+                {% csrf_token %}
+                <input type="text" name="comment_text" placeholder="Add a comment">
+                <button type="submit">Post</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ... -->
 
     <script>
         function toggleLike(photoId) {

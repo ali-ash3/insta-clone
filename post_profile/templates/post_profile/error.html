@@ -1,0 +1,41 @@
+{% include "post_profile/navbar.html" %}
+
+<style>
+    .error-message {
+        text-align: center;
+        margin-top: 50px;
+        font-family: Arial, sans-serif;
+    }
+
+    .error-message h1 {
+        font-size: 36px;
+        color: #333;
+    }
+
+    .error-message p {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    .error-message a {
+        display: inline-block;
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .error-message a:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<div class="error-message">
+    <h1>Oops!</h1>
+    <p>{{ error_message }}</p>
+    <a href="{% url 'accounts:index' %}">Return to the homepage</a>
+</div>
+

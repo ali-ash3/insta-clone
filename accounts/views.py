@@ -9,7 +9,11 @@ from django.urls import reverse
 
 @login_required(login_url='/login/')
 def index(request):
-    return render(request, "accounts/index.html")
+    all_users = User.objects.all()
+    context = {
+        'all_users': all_users
+    }
+    return render(request, "accounts/index.html", context)
 
 
 def sign_up(request):
