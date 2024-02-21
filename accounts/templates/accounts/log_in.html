@@ -18,12 +18,15 @@
             width: 350px;
             background: #fff;
             padding: 20px;
-            border: 1px solid #dbdbdb;
+            border: 2px solid #dbdbdb;
             text-align: center;
+            border-radius: 8px;
+
         }
 
         .instagram-logo {
             margin: 20px 0;
+            width: 85%;
         }
 
         .form-input {
@@ -106,7 +109,7 @@
         </div>
 
         <div class="alternative-login">
-            <a href="{% url "accounts:sign_up" %}">Sign up</a>
+            Don't have an account? <a href="{% url "accounts:sign_up" %}">Sign up</a>
         </div>
 
         {% comment %} <a href="#">Forgot password?</a> {% endcomment %}
