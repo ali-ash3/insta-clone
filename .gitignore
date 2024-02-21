@@ -93,3 +93,6 @@ profile_pics
 activate_env
 todos
 uploaded_posts
+login.html
+.gitignore
+sign_up.html

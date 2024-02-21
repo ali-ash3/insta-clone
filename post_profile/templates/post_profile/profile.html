@@ -85,152 +85,149 @@
 
 {% comment %} {% block content %} {% endcomment %}
 <style>
-  .intro {
+    .profile-page-container {
+      max-width: 930px;
+      margin: auto;
+      padding-top: 30px;
+    }
+  
+    .profile-section {
       display: flex;
-      margin-left: 50px;
-      margin-bottom: 50px;
-  }
-  .profile_img {
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+  
+    .profile_img {
       height: 150px;
       width: 150px;
-  }
+      margin-right: 30px;
+    }
   
-  .profile_img img {
-    height: auto; /* This will make the height adjust to maintain the aspect ratio */
-    width: 150px; /* Set the width as desired */
-    border-radius: 50%;
-    object-fit: cover; /* This will cover the div with the image without stretching it */
-}
-
-  .info,
-  .activityDetail,
-  .bio {
-      margin: 15px 0px 0px 100px;
+    .profile_img img {
+      border-radius: 50%;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+  
+    .profile-details {
       display: flex;
-  }
-  .bio {
-      font-weight: bold;
-  }
-  .activityDetail {
-      font-size: 18px;
-  }
-  .postsNo {
-      margin-right: 20px;
-  }
-  .username {
-      margin-right: 20px;
-      font-size: 25px;
-  }
-  .postsAndOthers {
-      border-top: 1px solid rgb(189, 188, 188);
-  }
-  .links {
-      margin-top: 10px;
-      display: flex;
-      font-size: 15px;
-      margin-left: 45%;
-  }
-  .link {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .username {
+      font-size: 28px;
+      margin: 0;
+    }
+  
+    .button {
+      border: 1px solid #dbdbdb;
+      border-radius: 4px;
+      padding: 5px 9px;
+      margin-top: 8px; /* Added margin for spacing */
+      font-weight: 600;
       cursor: pointer;
-  }
+      background-color: transparent;
+      text-transform: uppercase; /* Instagram-like button text */
+    }
+  
+    .activityDetail {
+      display: flex;
+      justify-content: center;
+      font-size: 16px;
+      margin-top: 8px; /* Added margin for spacing */
+    }
+  
+    .postsNo {
+      margin: 0 20px;
+    }
+  
+    .bio {
+      text-align: right;
+      width: 100%;
+      margin-top: 8px; /* Added margin for spacing */
+    }
+  
+    /* Grid layout for posts */
     .posts {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr); /* creates three columns */
-        gap: 5px; /* space between grid items */
-        padding: 5px;
-        justify-items: center;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      justify-items: center;
+      padding: 0;
     }
-
+  
     .single_post {
-        display: flex;
-        justify-content: center; /* centers the image horizontally */
-        align-items: center; /* centers the image vertically */
-        overflow: hidden; /* hides parts of the image that overflow the container */
-        margin-top: 5px;
-        height: 300px; /* fixed height */
-        width: 305px; /* fixed width */
-        background-color: #f4f4f4; /* background color for the empty space around the image if any */
+      height: 293px; /* Adjusted for Instagram-like aspect ratio */
+      width: 293px;
+      background-color: #f4f4f4;
     }
-
+  
     .single_post img {
-        max-height: 100%; /* maximum height is the container height */
-        max-width: 100%; /* maximum width is the container width */
-        object-fit: cover; /* covers the container with the image without stretching */
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
-</style>
-<div class="intro">
-  <div class="profile_img">
-      <img
-          height="150px"
-          width="150px"
-          style="border-radius: 50%"
-          src="{{ profile_data.profile_picture.url }}"
-      />
-  </div>
-  <div class="mainInfo">
-      <div class="info">
-          <div class="username">{{user_data.username}}</div>
-          <div class="buttons">
-              {% if user == user_data %}
-              <a href="{% url "post_profile:edit_profile_details" user.id %}">
-                  <button
-                      style="
-                          width: 120px;
-                          font-weight: bold;
-                          padding: 8px;
-                          cursor: pointer;
-                          border: 0px solid rgb(189, 188, 188);
-                          border-radius: 10px;
-                          bacground-color: rgb(189, 188, 188);
-                          font-size: 15px;
-                      "
-                  >
-                      Edit profile
-                  </button>
-              </a>
-              {% else %}
-              {% if follow is none %}
-              <a style="text-deacoration: none; color: black" href="{% url 'post_profile:follow' user_data.id %}">
-                  <button style="width: 120px; font-weight: bold; padding: 8px; cursor: pointer; border: 0px solid rgb(189, 188, 188); border-radius: 10px; bacground-color: rgb(189, 188, 188); font-size: 15px;">Follow</button>
-              </a>
-              {% else %}
-              <a style="text-deacoration: none; color: black" href="{% url 'post_profile:unfollow' user_data.id %}">
-                  <button style="width: 120px; font-weight: bold; padding: 8px; cursor: pointer; border: 0px solid rgb(189, 188, 188); border-radius: 10px; bacground-color: rgb(189, 188, 188); font-size: 15px;">Unfollow</button>
-              </a>
-              {% endif %}
-              {% endif %}
-          </div>
+  
+    /* Button styles - keeping your design intact */
+    .button {
+      width: 120px;
+      font-weight: bold;
+      padding: 8px;
+      cursor: pointer;
+      border: 0px solid rgb(189, 188, 188);
+      border-radius: 10px;
+      background-color: rgb(189, 188, 188);
+      font-size: 15px;
+    }
+  </style>
+  
+  <div class="profile-page-container">
+    <div class="profile-section">
+      <div class="profile_img">
+        <img src="{{ profile_data.profile_picture.url }}" alt="Profile picture">
       </div>
-      <div class="activityDetail">
-          <div class="postsNo"><b>{{ post_number }}</b> posts</div>
-          <div class="postsNo"><b>{{ follower }}</b> followers</div>
-          <div class="postsNo"><b>{{ following }}</b> following</div>
+      <div class="profile-details">
+        <h1 class="username">{{ user_data.username }}</h1>
+        {% if user == user_data %}
+        <a href="{% url 'post_profile:edit_profile_details' user.id %}" class="button">Edit profile</a>
+        {% else %}
+        <!-- Follow/Unfollow Button -->
+        {% if follow is none %}
+        <a href="{% url 'post_profile:follow' user_data.id %}" class="button">Follow</a>
+        {% else %}
+        <a href="{% url 'post_profile:unfollow' user_data.id %}" class="button">Unfollow</a>
+        {% endif %}
+        {% endif %}
+        <div class="activityDetail">
+          <span class="postsNo"><b>{{ post_number }}</b> posts</span>
+          <span class="postsNo"><b>{{ follower }}</b> followers</span>
+          <span class="postsNo"><b>{{ following }}</b> following</span>
+        </div>
+        <p class="bio">{{ profile_data.bio }}</p>
       </div>
-      <div class="bio">{{profile_data.bio}}</div>
-  </div>
-</div>
-<div class="postsAndOthers">
-  <div class="links">
-      <div class="link"><i class="fa-solid fa-table-cells"></i> POSTS</div>
-  </div>
-  {% if user_data == request.user or follow is not none %}
-  <div class="posts">
-    {% for post in posts %}
-    <div class="single_post">
-        <a href="{% url 'post_profile:photo_detail' post.id %}">
-            <div class="post_image">
-                <img src="{{ post.image.url }}" />
-            </div>
-        </a>
     </div>
-    {% endfor %}
+        {% if user == user_data %}
+        <a href="{% url 'post_profile:edit_profile_details' user.id %}" class="button">Edit profile</a>
+        {% else %}
+        <!-- Follow/Unfollow Button -->
+        {% if follow is none %}
+        <a href="{% url 'post_profile:follow' user_data.id %}" class="button">Follow</a>
+        {% else %}
+        <a href="{% url 'post_profile:unfollow' user_data.id %}" class="button">Unfollow</a>
+        {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  
+    <div class="posts">
+      {% for post in posts %}
+      <div class="single_post">
+        <a href="{% url 'post_profile:photo_detail' post.id %}">
+          <img src="{{ post.image.url }}" alt="Post">
+        </a>
+      </div>
+      {% endfor %}
+    </div>
   </div>
-  {% else %}
-  <div style="text-align: center; margin-top: 50px">
-      <h2>Please follow to see the post</h2>
-  </div>
-  {% endif %}
-</div>
-
-
-{% comment %} {% endblock %} {% endcomment %}

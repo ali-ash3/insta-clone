@@ -1,16 +1,116 @@
-<h1> Login </h1>
-<form action="{% url 'accounts:login' %}" method="post">
-    {% csrf_token %}
-    {% if login_message %}<p style="color: red"><strong>{{ login_message }}</strong></p>{% endif %}
-    <label for="username">Username: </label>
-    <input type="text" value="" name="username"> <br/><br/>
-    <label for="email">Password: </label>
-    <input type="password" value="" name="password"> <br/><br/>
-    <input type="submit" value="Login" id="login">
-</form>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Instagram Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #fafafa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-<h1> Register </h1>
+        .instagram-login {
+            width: 350px;
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #dbdbdb;
+            text-align: center;
+        }
 
-<p>Do not have account? 
-    <a href="{% url "accounts:sign_up" %}">Signup</a>
-</p>
+        .instagram-logo {
+            margin: 20px 0;
+        }
+
+        .form-input {
+            width: 94%;
+            padding: 10px;
+            margin: 5px 0;
+            background: #fafafa;
+            border: 1px solid #dbdbdb;
+            border-radius: 3px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            background: #0095f6;
+            border: none;
+            border-radius: 3px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .divider {
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #dbdbdb;
+            position: absolute;
+            top: 50%;
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        .divider-text {
+            padding: 0 10px;
+            background: #fff;
+            z-index: 1;
+            position: relative;
+        }
+
+        .alternative-login {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="instagram-login">
+        <img class="instagram-logo" src="https://png.monster/wp-content/uploads/2021/01/instagram-clip-art-14-70017bcc-370x132.png" alt="Instagram Logo" width="90%">
+
+        <form action="{% url 'accounts:login' %}" method="post">
+            {% csrf_token %}
+            {% if login_message %}<p style="color: red"><strong>{{ login_message }}</strong></p>{% endif %}
+            {% comment %} <label for="username">Username: </label> {% endcomment %}
+            <input type="text" class="form-input" value="" name="username" placeholder="Enter username">
+            {% comment %} <label for="email">Password: </label> {% endcomment %}
+            <input type="password" class="form-input" value="" name="password" placeholder="Enter password">
+            <!-- <input type="submit" > -->
+            <button value="Login" id="login" class="login-btn">Log in</button>
+        </form>
+        
+        
+        
+
+        <div class="divider">
+            <span class="divider-text">OR</span>
+        </div>
+
+        <div class="alternative-login">
+            <a href="{% url "accounts:sign_up" %}">Sign up</a>
+        </div>
+
+        {% comment %} <a href="#">Forgot password?</a> {% endcomment %}
+    </div>
+
+</body>
+</html>
