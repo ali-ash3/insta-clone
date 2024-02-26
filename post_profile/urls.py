@@ -16,6 +16,8 @@ urlpatterns = [
     path('follow/<int:id>/', views.follow, name='follow'),
     path('unfollow/<int:id>/', views.unfollow, name='unfollow'),
     path('error/<str:message>/', views.error_page, name='error_page'),
+    path('search/', views.search_users, name='search_users'),
+
 
 
     

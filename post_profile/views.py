@@ -5,6 +5,7 @@ from django.urls import reverse
 from post_profile.models import Comment, Follow, Like, Photo, ProfileDetails
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 # Create your views here.
 
@@ -168,3 +169,19 @@ def profile(request, id):
         return redirect('accounts:login')
     else:
         return render(request, "post_profile/user_not_found.html")
+    
+
+@login_required(login_url='accounts:login')
+def search_users(request):
+    query = request.GET.get('q', '')
+    if query:
+        users = User.objects.filter(
+            Q(username__icontains=query) # | 
+            # Q(first_name__icontains=query) |
+            # Q(last_name__icontains=query)
+        ).distinct()
+    else:
+        users = User.objects.none()
+
+    return render(request, 'post_profile/search.html', {'users': users, 'query': query})
+
