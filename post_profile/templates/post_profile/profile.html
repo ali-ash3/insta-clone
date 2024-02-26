@@ -1,228 +1,165 @@
 {% include 'post_profile/navbar.html' %}
-
-{% comment %} {% block content %}
-    <div class="profile">
-        <h1>Username: {{ user.username }}</h1>
-
-        {% if profile_details.profile_picture %}
-            <img src="{{ profile_details.profile_picture.url }}" alt="Profile Picture" width="10%" style="border-radius: 50%;">
-        {% else %}
-            <p>No profile picture available</p>
-        {% endif %}
-
-        {% if profile_details.bio %}
-            <p>Bio: {{ profile_details.bio }}</p>
-        {% elif request.user == user %}
-            <p>No bio yet <a href="{% url "post_profile:edit_profile_details" user.id %}">Add Bio</a></p>
-        {% else %}
-            <p>No bio yet</p>
-        {% endif %}
-
-        {% if user != user_profile.user %}
-            <div id="follow-button">
-                <button id="toggle-follow" data-user-id="{{ user.id }}">
-                    {% if user_profile in user.followers.all %}
-                        Unfollow
-                    {% else %}
-                        Follow
-                    {% endif %}
-                </button>
-            </div>
-            <p id="follower-count">Followers: {{ user.followers.count }}</p>
-        {% endif %}
-
-        <h2>Posts:</h2>
-        {% if user.photo_set.all %}
-            <ul>
-                {% for photo in user.photo_set.all %}
-                    <li>
-                        <img src="{{ photo.image.url }}" alt="User Post" width="100" height="100">
-                        <p>Caption: {{ photo.caption }}</p>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No posts yet.</p>
-        {% endif %}
-    </div>
-    <p>Go To <a href="{% url "accounts:index" %}">Index</a></p>
-
-    {% if request.user == user %}
-        <p><a href="{% url "post_profile:edit_profile_details" user.id %}">Edit details</a></p>
-        <p><a href="{% url "post_profile:upload_photo" %}">Create Post</a></p>
-    {% endif %}
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#toggle-follow').click(function () {
-                var userId = $(this).data('user-id');
-                $.ajax({
-                    url: '{% url "post_profile:toggle_follow" 0 %}'.replace('0', userId),
-                    method: 'POST',
-                    data: {
-                        csrfmiddlewaretoken: '{{ csrf_token }}'
-                    },
-                    success: function (data) {
-                        if (data.error) {
-                            alert(data.error);
-                        } else {
-                            if (data.is_following) {
-                                $('#toggle-follow').text('Unfollow');
-                            } else {
-                                $('#toggle-follow').text('Follow');
-                            }
-                            $('#follower-count').text('Followers: ' + data.follower_count);
-                        }
-                    }
-                });
-            });
-        });
-    </script>
-
-{% endblock %} {% endcomment %}
-
-
-{% comment %} {% block content %} {% endcomment %}
 <style>
     .profile-page-container {
-      max-width: 930px;
-      margin: auto;
-      padding-top: 30px;
-    }
-  
-    .profile-section {
-      display: flex;
-      justify-content: space-evenly;
-      margin-bottom: 20px;
-      margin-left: -357px;
-    }
-  
-    .profile_img {
-      height: 150px;
-      width: 150px;
-      margin-right: 30px;
-      border: 2px solid #dbdbdb;
-      border-radius: 50%;
-    }
-  
-    .profile_img img {
-      border-radius: 50%;
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
-    }
-  
-    .profile-details {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .username {
-      font-size: 28px;
-      margin: 0;
-    }
-    
-    .activityDetail {
-      display: flex;
-      justify-content: center;
-      font-size: 16px;
-      margin-top: 8px; /* Added margin for spacing */
-    }
-  
-    .postsNo {
-      margin: 0 20px;
-    }
-    
-    .follow-button {
-      text-align: left;
-      font-weight: bold;
-      padding: 8px;
-      cursor: pointer;
-      border: 0px solid rgb(189, 188, 188);
-      border-radius: 10px;
-      background-color: #007bff;
-      font-size: 15px;
-      text-decoration: none;
-      color: white;
-      
-    }
-    
-    .bio {
-      text-align: left;
-      width: 100%;
-      margin-top: 8px;
-      margin-left: 40px;
+        max-width: 930px;
+        margin: auto;
+        padding-top: 30px;
     }
 
-  
+    .profile-section {
+        display: flex;
+        justify-content: space-evenly;
+        margin-bottom: 20px;
+        margin-left: -357px;
+    }
+
+    .profile_img {
+        height: 150px;
+        width: 150px;
+        margin-right: 30px;
+        border: 2px solid #dbdbdb;
+        border-radius: 50%;
+    }
+
+    .profile_img img {
+        border-radius: 50%;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .profile-section {
+        display: flex;
+        justify-content: space-evenly;
+        position: relative; /* Add relative positioning to contain the absolute elements */
+        padding-right: 150px; /* Add padding to the right to ensure space for the button */
+        margin-bottom: 20px;
+        margin-left: -357px;
+    }
+
+    .username {
+        font-size: 28px;
+        display: block;
+        margin-bottom: 8px;
+        padding-left: 20px;
+    }
+
+    .activityDetail {
+        display: flex;
+        justify-content: center;
+        font-size: 16px;
+        margin-top: 8px; /* Added margin for spacing */
+    }
+
+    .postsNo {
+        margin: 0 20px;
+    }
+
+    .follow-button {
+        text-align: left;
+        font-weight: bold;
+        padding: 8px;
+        cursor: pointer;
+        border: 0px solid rgb(189, 188, 188);
+        border-radius: 10px;
+        background-color: #007bff;
+        font-size: 17px;
+        text-decoration: none;
+        color: white;
+
+    }
+
+    .bio {
+        text-align: left;
+        width: 100%;
+        margin-top: 8px;
+        margin-left: 40px;
+    }
+
+
     /* Grid layout for posts */
     .posts {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      justify-items: center;
-      padding: 0;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        justify-items: center;
+        padding: 0;
     }
-  
+
     .single_post {
-      height: 293px; /* Adjusted for Instagram-like aspect ratio */
-      width: 293px;
-      background-color: #f4f4f4;
+        height: 293px; /* Adjusted for Instagram-like aspect ratio */
+        width: 293px;
+        background-color: #f4f4f4;
     }
-  
+
     .single_post img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
+
     .profile-header {
-      display: flex;
-      align-items: left;
-      justify-content: start;
-      margin-bottom: 8px;
-  }
-    
-  </style>
-  
-  <div class="profile-page-container">
+        display: flex;
+        align-items: left;
+        justify-content: start;
+        margin-bottom: 8px;
+        text-align: left;
+    }
+
+    .edit-profile,
+    .follow-unfollow {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    .profile-details {
+        position: relative;
+    }
+
+</style>
+
+<div class="profile-page-container">
     <div class="profile-section">
-      <div class="profile_img">
-        <img src="{{ profile_data.profile_picture.url }}" alt="Profile picture">
-      </div>
-      <div class="profile-details">
-        <div class="profile-header"> <!-- New wrapper div -->
-            <span class="username">{{ user_data.username }}</span>
+        <div class="profile_img">
+            <img src="{{ profile_data.profile_picture.url }}" alt="Profile picture">
+        </div>
+        <div class="profile-details">
+            <div class="profile-header"> <!-- New wrapper div for the username -->
+                <span class="username">{{ user_data.username }}</span>
+            </div>
             {% if user == user_data %}
-            <a href="{% url 'post_profile:edit_profile_details' user.id %}" class="follow-button">Edit profile</a>
+            <div class="edit-profile"> <!-- Separate div for the button -->
+                <a href="{% url 'post_profile:edit_profile_details' user.id %}" class="follow-button">Edit profile</a>
+            </div>
             {% else %}
             <!-- Follow/Unfollow Button -->
-            {% if follow is none %}
-            <a href="{% url 'post_profile:follow' user_data.id %}" class="follow-button">Follow</a>
-            {% else %}
-            <a href="{% url 'post_profile:unfollow' user_data.id %}" class="follow-button">Unfollow</a>
+            <div class="follow-unfollow">
+                {% if follow is none %}
+                <a href="{% url 'post_profile:follow' user_data.id %}" class="follow-button">Follow</a>
+                {% else %}
+                <a href="{% url 'post_profile:unfollow' user_data.id %}" class="follow-button">Unfollow</a>
+                {% endif %}
+            </div>
             {% endif %}
-            {% endif %}
-        </div> <!-- End of new wrapper div -->
-        <div class="activityDetail">
-            <span class="postsNo"><b>{{ post_number }}</b> posts</span>
-            <span class="postsNo"><b>{{ follower }}</b> followers</span>
-            <span class="postsNo"><b>{{ following }}</b> following</span>
+            <div class="activityDetail">
+                <span class="postsNo"><b>{{ post_number }}</b> posts</span>
+                <span class="postsNo"><b>{{ follower }}</b> followers</span>
+                <span class="postsNo"><b>{{ following }}</b> following</span>
+            </div>
+            <p class="bio">{{ profile_data.bio }}</p>
         </div>
-        <p class="bio">{{ profile_data.bio }}</p>
+
     </div>
-    
-    </div>
-    </div>
-  
-    <div class="posts">
-      {% for post in posts %}
-      <div class="single_post">
+</div>
+
+<div class="posts">
+    {% for post in posts %}
+    <div class="single_post">
         <a href="{% url 'post_profile:photo_detail' post.id %}">
-          <img src="{{ post.image.url }}" alt="Post">
+            <img src="{{ post.image.url }}" alt="Post">
         </a>
-      </div>
-      {% endfor %}
     </div>
-  </div>
+    {% endfor %}
+</div>
+</div>
