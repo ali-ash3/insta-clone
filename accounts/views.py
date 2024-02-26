@@ -1,13 +1,16 @@
 # views.py
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.contrib import messages
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth import update_session_auth_hash
 
 
-@login_required(login_url='/login/')
+@login_required(login_url='accounts:login')
 def index(request):
     all_users = User.objects.all()
     context = {
@@ -55,6 +58,24 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('accounts:login')) 
 
+
+@login_required(login_url='accounts:login')
+def change_password(request):
+    if request.method == 'POST':
+        current_password = request.POST.get('current_password')
+        new_password = request.POST.get('new_password')
+        user = request.user
+        
+        if user.check_password(current_password):
+            user.set_password(new_password)
+            user.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('accounts:change_password')
+        else:
+            messages.error(request, 'Current password is incorrect.')
+            return redirect('accounts:change_password')
+    return render(request, 'accounts/change_password.html')
 
 # @login_required
 # def edit_profile(request):

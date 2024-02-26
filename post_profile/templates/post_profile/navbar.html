@@ -40,7 +40,7 @@
     <div class="navbar-links">
         <!-- Leave the href attributes empty to add URLs later -->
         <a href="{% url "accounts:index" %}">Home</a>
-        <a href="{% url "post_profile:profile" user.id %}">Profile</a>
+        <a href="{% url "post_profile:profile" user.id %}">Profile ({{ user.username }})</a>
         <a href="{% url "post_profile:upload_photo" %}">Create Post</a>
         <a href="#">Search</a>
         <a href="{% url "accounts:logout" %}">Logout</a>

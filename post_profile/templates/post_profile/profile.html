@@ -93,14 +93,17 @@
   
     .profile-section {
       display: flex;
-      justify-content: center;
+      justify-content: space-evenly;
       margin-bottom: 20px;
+      margin-left: -357px;
     }
   
     .profile_img {
       height: 150px;
       width: 150px;
       margin-right: 30px;
+      border: 2px solid #dbdbdb;
+      border-radius: 50%;
     }
   
     .profile_img img {
@@ -120,18 +123,7 @@
       font-size: 28px;
       margin: 0;
     }
-  
-    .button {
-      border: 1px solid #dbdbdb;
-      border-radius: 4px;
-      padding: 5px 9px;
-      margin-top: 8px; /* Added margin for spacing */
-      font-weight: 600;
-      cursor: pointer;
-      background-color: transparent;
-      text-transform: uppercase; /* Instagram-like button text */
-    }
-  
+    
     .activityDetail {
       display: flex;
       justify-content: center;
@@ -142,12 +134,28 @@
     .postsNo {
       margin: 0 20px;
     }
-  
-    .bio {
-      text-align: right;
-      width: 100%;
-      margin-top: 8px; /* Added margin for spacing */
+    
+    .follow-button {
+      text-align: left;
+      font-weight: bold;
+      padding: 8px;
+      cursor: pointer;
+      border: 0px solid rgb(189, 188, 188);
+      border-radius: 10px;
+      background-color: #007bff;
+      font-size: 15px;
+      text-decoration: none;
+      color: white;
+      
     }
+    
+    .bio {
+      text-align: left;
+      width: 100%;
+      margin-top: 8px;
+      margin-left: 40px;
+    }
+
   
     /* Grid layout for posts */
     .posts {
@@ -169,18 +177,13 @@
       height: 100%;
       object-fit: cover;
     }
-  
-    /* Button styles - keeping your design intact */
-    .button {
-      width: 120px;
-      font-weight: bold;
-      padding: 8px;
-      cursor: pointer;
-      border: 0px solid rgb(189, 188, 188);
-      border-radius: 10px;
-      background-color: rgb(189, 188, 188);
-      font-size: 15px;
-    }
+    .profile-header {
+      display: flex;
+      align-items: left;
+      justify-content: start;
+      margin-bottom: 8px;
+  }
+    
   </style>
   
   <div class="profile-page-container">
@@ -189,36 +192,28 @@
         <img src="{{ profile_data.profile_picture.url }}" alt="Profile picture">
       </div>
       <div class="profile-details">
-        <h1 class="username">{{ user_data.username }}</h1>
-        {% if user == user_data %}
-        <a href="{% url 'post_profile:edit_profile_details' user.id %}" class="button">Edit profile</a>
-        {% else %}
-        <!-- Follow/Unfollow Button -->
-        {% if follow is none %}
-        <a href="{% url 'post_profile:follow' user_data.id %}" class="button">Follow</a>
-        {% else %}
-        <a href="{% url 'post_profile:unfollow' user_data.id %}" class="button">Unfollow</a>
-        {% endif %}
-        {% endif %}
+        <div class="profile-header"> <!-- New wrapper div -->
+            <span class="username">{{ user_data.username }}</span>
+            {% if user == user_data %}
+            <a href="{% url 'post_profile:edit_profile_details' user.id %}" class="follow-button">Edit profile</a>
+            {% else %}
+            <!-- Follow/Unfollow Button -->
+            {% if follow is none %}
+            <a href="{% url 'post_profile:follow' user_data.id %}" class="follow-button">Follow</a>
+            {% else %}
+            <a href="{% url 'post_profile:unfollow' user_data.id %}" class="follow-button">Unfollow</a>
+            {% endif %}
+            {% endif %}
+        </div> <!-- End of new wrapper div -->
         <div class="activityDetail">
-          <span class="postsNo"><b>{{ post_number }}</b> posts</span>
-          <span class="postsNo"><b>{{ follower }}</b> followers</span>
-          <span class="postsNo"><b>{{ following }}</b> following</span>
+            <span class="postsNo"><b>{{ post_number }}</b> posts</span>
+            <span class="postsNo"><b>{{ follower }}</b> followers</span>
+            <span class="postsNo"><b>{{ following }}</b> following</span>
         </div>
         <p class="bio">{{ profile_data.bio }}</p>
-      </div>
     </div>
-        {% if user == user_data %}
-        <a href="{% url 'post_profile:edit_profile_details' user.id %}" class="button">Edit profile</a>
-        {% else %}
-        <!-- Follow/Unfollow Button -->
-        {% if follow is none %}
-        <a href="{% url 'post_profile:follow' user_data.id %}" class="button">Follow</a>
-        {% else %}
-        <a href="{% url 'post_profile:unfollow' user_data.id %}" class="button">Unfollow</a>
-        {% endif %}
-        {% endif %}
-      </div>
+    
+    </div>
     </div>
   
     <div class="posts">
