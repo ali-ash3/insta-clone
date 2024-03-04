@@ -6,17 +6,22 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib import messages
-from django.contrib.auth.hashers import check_password
 from django.contrib.auth import update_session_auth_hash
+from post_profile.models import Follow, Photo
 
 
-@login_required(login_url='accounts:login')
+# @login_required(login_url='accounts:login')
+# def index(request):
+#     all_users = User.objects.all()
+#     context = {
+#         'all_users': all_users
+#     }
+#     return render(request, "accounts/index.html", context)
+
 def index(request):
-    all_users = User.objects.all()
-    context = {
-        'all_users': all_users
-    }
-    return render(request, "accounts/index.html", context)
+    followed_users = Follow.objects.filter(followed_by=request.user).values_list('followed_to', flat=True)
+    posts = Photo.objects.filter(user__in=followed_users).order_by('-created_at')
+    return render(request, 'accounts/index.html', {'posts': posts})
 
 
 def sign_up(request):

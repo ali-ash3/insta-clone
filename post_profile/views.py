@@ -162,13 +162,14 @@ def profile(request, id):
     if not request.user.is_authenticated:
         return redirect('accounts:login')
     
-    follow = Follow.objects.filter(followed_by=user, followed_to=user_data).first()
+    is_own_profile = user == user_data
+    follow = None if is_own_profile else Follow.objects.filter(followed_by=user, followed_to=user_data).first()
     follower = Follow.objects.filter(followed_to=user_data).count()
     following = Follow.objects.filter(followed_by=user_data).count()
     profile_data = ProfileDetails.objects.filter(user=user_data).first()
-    posts = Photo.objects.filter(user=user_data).order_by('-created_at') if follow else []
-    post_number = posts.count() if follow else 0
-    has_followed = True if follow else False
+    has_followed = is_own_profile or bool(follow)
+    posts = Photo.objects.filter(user=user_data).order_by('-created_at') if has_followed else []
+    # post_number = posts.count()
 
     return render(request, "post_profile/profile.html", {
         "user": user,
@@ -178,8 +179,9 @@ def profile(request, id):
         "follow": follow,
         "following": following,
         "follower": follower,
-        "post_number": post_number,
-        "has_followed": has_followed
+        # "post_number": post_number,
+        "has_followed": has_followed,
+        "is_own_profile": is_own_profile
     })
 
 
