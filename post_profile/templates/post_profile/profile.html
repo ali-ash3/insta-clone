@@ -80,8 +80,8 @@
     /* Grid layout for posts */
     .posts {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
+        grid-template-columns: repeat(4, 1fr);
+        {% comment %} gap: 20px; {% endcomment %}
         justify-items: center;
         padding: 0;
     }
@@ -90,6 +90,8 @@
         height: 293px; /* Adjusted for Instagram-like aspect ratio */
         width: 293px;
         background-color: #f4f4f4;
+        margin: 20px;
+
     }
 
     .single_post img {
@@ -117,49 +119,88 @@
         position: relative;
     }
 
+    .no_posts h2 {
+        text-align: center;
+        font-size: 30px;
+        margin-top: 20px;
+        margin-left: 650px;
+    }
+    .no_posts h1 {
+      text-align: center;
+      font-size: 30px;
+      margin-top: 20px;
+      margin-left: 0px;
+  }
 </style>
 
 <div class="profile-page-container">
-    <div class="profile-section">
-        <div class="profile_img">
-            <img src="{{ profile_data.profile_picture.url }}" alt="Profile picture">
-        </div>
-        <div class="profile-details">
-            <div class="profile-header"> <!-- New wrapper div for the username -->
-                <span class="username">{{ user_data.username }}</span>
-            </div>
-            {% if user == user_data %}
-            <div class="edit-profile"> <!-- Separate div for the button -->
-                <a href="{% url 'post_profile:edit_profile_details' user.id %}" class="follow-button">Edit profile</a>
-            </div>
-            {% else %}
-            <!-- Follow/Unfollow Button -->
-            <div class="follow-unfollow">
-                {% if follow is none %}
-                <a href="{% url 'post_profile:follow' user_data.id %}" class="follow-button">Follow</a>
-                {% else %}
-                <a href="{% url 'post_profile:unfollow' user_data.id %}" class="follow-button">Unfollow</a>
-                {% endif %}
-            </div>
-            {% endif %}
-            <div class="activityDetail">
-                <span class="postsNo"><b>{{ post_number }}</b> posts</span>
-                <span class="postsNo"><b>{{ follower }}</b> followers</span>
-                <span class="postsNo"><b>{{ following }}</b> following</span>
-            </div>
-            <p class="bio">{{ profile_data.bio }}</p>
-        </div>
-
+  <div class="profile-section">
+    <div class="profile_img">
+      <img src="{{ profile_data.profile_picture.url }}" alt="Profile picture" />
     </div>
+    <div class="profile-details">
+      <div class="profile-header">
+        <!-- New wrapper div for the username -->
+        <span class="username">{{ user_data.username }}</span>
+      </div>
+      {% if user == user_data %}
+      <div class="edit-profile">
+        <!-- Separate div for the button -->
+        <a
+          href="{% url 'post_profile:edit_profile_details' user.id %}"
+          class="follow-button"
+          >Edit profile</a
+        >
+      </div>
+      {% else %}
+      <!-- Follow/Unfollow Button -->
+      <div class="follow-unfollow">
+        {% if follow is none %}
+        <a
+          href="{% url 'post_profile:follow' user_data.id %}"
+          class="follow-button"
+          >Follow</a
+        >
+        {% else %}
+        <a
+          href="{% url 'post_profile:unfollow' user_data.id %}"
+          class="follow-button"
+          >Unfollow</a
+        >
+        {% endif %}
+      </div>
+      {% endif %}
+      <div class="activityDetail">
+        <span class="postsNo"><b>{{ post_number }}</b> posts</span>
+        <span class="postsNo"><b>{{ follower }}</b> followers</span>
+        <span class="postsNo"><b>{{ following }}</b> following</span>
+      </div>
+      <p class="bio">{{ profile_data.bio }}</p>
+    </div>
+  </div>
 </div>
 
+<div class="divider">
+  <br />
+  <hr />
+  <br />
+</div>
+{% if has_followed %}
 <div class="posts">
-    {% for post in posts %}
-    <div class="single_post">
-        <a href="{% url 'post_profile:photo_detail' post.id %}">
-            <img src="{{ post.image.url }}" alt="Post">
-        </a>
-    </div>
-    {% endfor %}
+  {% for post in posts %}
+  <div class="single_post">
+    <a href="{% url 'post_profile:photo_detail' post.id %}">
+      <img src="{{ post.image.url }}" alt="{{ post.caption }}" />
+    </a>
+  </div>
+  {% empty %}
+  <div class="no_posts">
+    <h2>No posts available.</h2>
+  </div>
+  {% endfor %}
 </div>
+{% else %}
+<div class="no_posts">
+  <h1>Follow to see Posts</h1>
 </div>
+{% endif %}

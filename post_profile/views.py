@@ -155,21 +155,33 @@ def unfollow(request, id):
 @login_required(login_url='accounts:login')
 def profile(request, id):
     user = request.user
-    user_data = User.objects.filter(id = id).first()
-    if user_data is not None:
-        if request.user.is_authenticated:
-            follow = Follow.objects.filter(followed_by=user, followed_to=user_data).first()
-            follower = Follow.objects.filter(followed_to=user_data).count()
-            following = Follow.objects.filter(followed_by = user_data).count()
-            profile = ProfileDetails.objects.filter(user = user).first()
-            profile_data = ProfileDetails.objects.filter(user = user_data).first()
-            posts = Photo.objects.filter(user = user_data).order_by('-created_at')
-            post_number = posts.count()
-            return render(request, "post_profile/profile.html", {"user": user, "profile": profile, "posts": posts, "user_data": user_data, "profile_data": profile_data, "follow": follow, "following": following, "follower": follower, "post_number": post_number})
-        return redirect('accounts:login')
-    else:
+    user_data = User.objects.filter(id=id).first()
+    if user_data is None:
         return render(request, "post_profile/user_not_found.html")
     
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
+    
+    follow = Follow.objects.filter(followed_by=user, followed_to=user_data).first()
+    follower = Follow.objects.filter(followed_to=user_data).count()
+    following = Follow.objects.filter(followed_by=user_data).count()
+    profile_data = ProfileDetails.objects.filter(user=user_data).first()
+    posts = Photo.objects.filter(user=user_data).order_by('-created_at') if follow else []
+    post_number = posts.count() if follow else 0
+    has_followed = True if follow else False
+
+    return render(request, "post_profile/profile.html", {
+        "user": user,
+        "posts": posts,
+        "user_data": user_data,
+        "profile_data": profile_data,
+        "follow": follow,
+        "following": following,
+        "follower": follower,
+        "post_number": post_number,
+        "has_followed": has_followed
+    })
+
 
 @login_required(login_url='accounts:login')
 def search_users(request):
