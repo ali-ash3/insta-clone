@@ -98,12 +98,10 @@
             {% comment %} <label for="email">Password: </label> {% endcomment %}
             <input type="password" class="form-input" value="" name="password" placeholder="Enter password">
             <!-- <input type="submit" > -->
+            <input type="hidden" name="next" value="{{ next_url }}">
             <button value="Login" id="login" class="login-btn">Log in</button>
         </form>
         
-        
-        
-
         <div class="divider">
             <span class="divider-text">OR</span>
         </div>

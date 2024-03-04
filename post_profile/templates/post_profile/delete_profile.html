@@ -1,0 +1,80 @@
+{% include "post_profile/navbar.html" %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delete Profile</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #fafafa;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .navbar {
+        position: fixed; /* This will make the navbar stay at the top */
+        top: 0;
+        left: 0;
+        width: 98.5%; /* This ensures the navbar stretches across the full width */
+        z-index: 1000; /* This ensures the navbar stays on top of other content */
+      }
+
+      .confirmation-box {
+        background: #fff;
+        padding: 20px;
+        border: 2px solid #dbdbdb;
+        text-align: center;
+        border-radius: 8px;
+        width: 350px;
+      }
+      .confirmation-box h1 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 20px;
+      }
+      .confirmation-box button,
+      .confirmation-box a {
+        padding: 10px 20px;
+        margin: 10px;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+      }
+      .confirmation-box .ok-button {
+        background-color: #dc3545;
+      }
+      .confirmation-box .ok-button:hover {
+        background-color: #c82333;
+      }
+      .confirmation-box a {
+        background-color: #007bff;
+      }
+      .confirmation-box a:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="confirmation-box">
+      <h1>Are you sure you want to delete your profile?</h1>
+      <form method="post" action="{% url 'post_profile:delete_user' %}">
+        {% csrf_token %}
+        <button type="submit" class="ok-button">OK</button>
+        <a
+          href="{% url 'post_profile:edit_profile_details' user.id %}"
+          class="cancel-button"
+          >Cancel</a
+        >
+      </form>
+    </div>
+  </body>
+</html>

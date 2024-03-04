@@ -185,3 +185,12 @@ def search_users(request):
 
     return render(request, 'post_profile/search.html', {'users': users, 'query': query})
 
+@login_required(login_url='accounts:login')
+def delete_user(request):
+    user = request.user
+
+    if request.method == 'POST':
+        user.delete()
+        return redirect('accounts:login')
+
+    return render(request, 'post_profile/delete_profile.html', {'user': user})
