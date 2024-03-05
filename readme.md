@@ -18,12 +18,9 @@ Ensure Python is installed on your system.
 Create a virtual environment:
 
 - **Windows:**
-  ```bash
+  ```bash```
   py -m venv venv
-
-  Linux:
-
-- **bash:**
+- **Linux:**
  ```bash
   source venv/bin/activate
 
