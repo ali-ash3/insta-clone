@@ -10,14 +10,8 @@ from django.contrib.auth import update_session_auth_hash
 from post_profile.models import Follow, Photo
 
 
-# @login_required(login_url='accounts:login')
-# def index(request):
-#     all_users = User.objects.all()
-#     context = {
-#         'all_users': all_users
-#     }
-#     return render(request, "accounts/index.html", context)
 
+@login_required(login_url='accounts:login')
 def index(request):
     followed_users = Follow.objects.filter(followed_by=request.user).values_list('followed_to', flat=True)
     posts = Photo.objects.filter(user__in=followed_users).order_by('-created_at')
