@@ -17,11 +17,28 @@ Ensure Python is installed on your system.
 
 Create a virtual environment:
 
-- **Windows:**
-  ```bash```
+  ```bash
   py -m venv venv
-- **Linux:**
+```
+###Activate the Virtual Environment
+
  ```bash
-  source venv/bin/activate
+  venv\Scripts\activate
+```
+### Install Dependencies
+Install the required dependencies:
+ ```bash
+  pip install -r requirements.txt
+```
+### Run the Server
+Start the development server:
+
+```bash
+py manage.py runserver
+```
+
+
+
+
 
 
