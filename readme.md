@@ -23,6 +23,8 @@ Create a virtual environment:
 
   Linux:
 
-bash
+- **bash:**
  ```bash
-source venv/bin/activate
+  source venv/bin/activate
+
+
