@@ -20,25 +20,22 @@ Create a virtual environment:
   ```bash
   py -m venv venv
 ```
-###Activate the Virtual Environment
+
+### Activate the Virtual Environment
 
  ```bash
   venv\Scripts\activate
 ```
+
 ### Install Dependencies
 Install the required dependencies:
  ```bash
   pip install -r requirements.txt
 ```
+
 ### Run the Server
 Start the development server:
 
 ```bash
 py manage.py runserver
 ```
-
-
-
-
-
-
