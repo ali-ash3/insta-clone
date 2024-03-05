@@ -20,3 +20,9 @@ Create a virtual environment:
 - **Windows:**
   ```bash
   py -m venv venv
+
+  Linux:
+
+bash
+ ```bash
+source venv/bin/activate
