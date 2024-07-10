@@ -79,14 +79,15 @@
 
     .like-button {
         background: none;
-        border: none;
+        border-style: solid;
+        border-radius: 3px;
         cursor: pointer;
-        padding: 5px 10px;
+        padding: 3px 5px;
     }
 
-    .like-button:focus {
+    {% comment %} .like-button:focus {
         outline: none;
-    }
+    } {% endcomment %}
 
     .comment-form {
         display: flex;

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video Platform UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-900 text-white">
+    <!-- Header -->
+    <header class="flex items-center justify-between p-4 bg-gray-800">
+      <div class="flex items-center">
+        <button class="text-white">
+          <i class="fas fa-bars"></i>
+        </button>
+        <img
+          src="https://placehold.co/90x30"
+          alt="Logo placeholder"
+          class="ml-2"
+        />
+      </div>
+      <div class="flex-1 mx-4">
+        <input
+          type="search"
+          placeholder="Search"
+          class="w-full p-2 bg-gray-700 rounded"
+        />
+      </div>
+      <div class="flex items-center">
+        <!-- Add additional icons here as necessary -->
+        <button class="text-white">
+          <i class="fas fa-video"></i>
+        </button>
+        <button class="text-white ml-4">
+          <i class="fas fa-th"></i>
+        </button>
+        <button class="text-white ml-4">
+          <i class="fas fa-bell"></i>
+        </button>
+        <div class="ml-4">
+          <img
+            src="https://placehold.co/32x32"
+            alt="User avatar placeholder"
+            class="rounded-full"
+          />
+        </div>
+      </div>
+    </header>
+
+    <div class="flex">
+      <aside class="w-60 bg-gray-800 p-4">
+        <nav>
+          <a href="#" class="flex items-center p-2 hover:bg-gray-700 rounded">
+            <i class="fas fa-home"></i>
+            <span class="ml-2">Home</span>
+          </a>
+          <!-- Add additional sidebar items here -->
+          <a
+            href="#"
+            class="flex items-center p-2 hover:bg-gray-700 rounded mt-2"
+          >
+            <i class="fas fa-fire"></i>
+            <span class="ml-2">Trending</span>
+          </a>
+          <a
+            href="#"
+            class="flex items-center p-2 hover:bg-gray-700 rounded mt-2"
+          >
+            <i class="fas fa-subscriptions"></i>
+            <span class="ml-2">Subscriptions</span>
+          </a>
+          <!-- ... other sidebar items ... -->
+        </nav>
+      </aside>
+
+      <!-- Main content -->
+      <div class="main-content flex-1 p-4">
+        <!-- Header -->
+        <div class="header mb-4">
+          <!-- Search bar and other header content here -->
+          <!-- ... -->
+        </div>
+
+        <!-- Videos grid -->
+        <div class="grid grid-cols-3 gap-4">
+          <div class="bg-gray-800 p-4 rounded">
+            <img
+              src="https://placehold.co/280x157.png"
+              alt="Coke Studio performance"
+              class="w-full rounded"
+            />
+            <h2 class="text-lg font-bold mt-2">
+              Charkha Nolakha | Atif Aslam and Qayaas | Season 5 | Coke
+              Studio...
+            </h2>
+            <p class="text-gray-400">
+              Rohail Hyatt, Atif Aslam, Meesha Shafi, and more
+            </p>
+          </div>
+          <div class="bg-gray-800 p-4 rounded">
+            <img
+              src="https://placehold.co/280x157.png"
+              alt="Coke Studio performance"
+              class="w-full rounded"
+            />
+            <h2 class="text-lg font-bold mt-2">
+              Charkha Nolakha | Atif Aslam and Qayaas | Season 5 | Coke
+              Studio...
+            </h2>
+            <p class="text-gray-400">
+              Rohail Hyatt, Atif Aslam, Meesha Shafi, and more
+            </p>
+          </div>
+          <div class="bg-gray-800 p-4 rounded">
+            <img
+              src="https://placehold.co/280x157.png"
+              alt="Coke Studio performance"
+              class="w-full rounded"
+            />
+            <h2 class="text-lg font-bold mt-2">
+              Charkha Nolakha | Atif Aslam and Qayaas | Season 5 | Coke
+              Studio...
+            </h2>
+            <p class="text-gray-400">
+              Rohail Hyatt, Atif Aslam, Meesha Shafi, and more
+            </p>
+          </div>
+          <div class="bg-gray-800 p-4 rounded">
+            <img
+              src="https://placehold.co/280x157.png"
+              alt="Coke Studio performance"
+              class="w-full rounded"
+            />
+            <h2 class="text-lg font-bold mt-2">
+              Charkha Nolakha | Atif Aslam and Qayaas | Season 5 | Coke
+              Studio...
+            </h2>
+            <p class="text-gray-400">
+              Rohail Hyatt, Atif Aslam, Meesha Shafi, and more
+            </p>
+          </div>
+          <div class="bg-gray-800 p-4 rounded">
+            <img
+              src="https://placehold.co/280x157.png"
+              alt="Animated movie scene thumbnail"
+              class="w-full rounded"
+            />
+            <h2 class="text-lg font-bold mt-2">
+              Full Highlights | Islamabad United vs Peshawar Zalmi |...
+            </h2>
+            <p class="text-gray-400">Pakistan Super League</p>
+          </div>
+          <!-- Video card 5 -->
+          <div class="bg-gray-800 p-4 rounded">
+            <img
+              src="https://placehold.co/280x157.png"
+              alt="Music video scene thumbnail"
+              class="w-full rounded"
+            />
+            <h2 class="text-lg font-bold mt-2">
+              Dil Jalane Ki Baat - Ali Sethi | Aesthetics
+            </h2>
+            <p class="text-gray-400">Ali Sethi</p>
+          </div>
+          <!-- Video card 6 -->
+          <div class="bg-gray-800 p-4 rounded">
+            <img
+              src="https://placehold.co/280x157.png"
+              alt="Drama scene thumbnail"
+              class="w-full rounded"
+            />
+            <h2 class="text-lg font-bold mt-2">Fury || Another Love</h2>
+            <p class="text-gray-400">qnemm</p>
+          </div>
+          <!-- ... other video cards ... -->
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
